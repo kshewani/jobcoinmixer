@@ -93,19 +93,16 @@ public class MixingService implements IMixingService {
                (mixingRequest != null) &&
                (!mixingRequest.isComplete()) &&
                (!mixingRequest.isTransactionAttached()) &&
-               (Utils.stringToDate(transaction.getTimestamp()).compareTo(mixingRequest.getRequestBookingTime()) > 0) ||
+               (Utils.stringToDate(transaction.getTimestamp()).compareTo(mixingRequest.getRequestBookingTime()) > 0) &&
                (Double.parseDouble(mixingRequest.getAmount()) == Double.parseDouble(transaction.getAmount()));
     }
 
     private void sendTransactionToMixingQueue(IMixingRequest mixingRequest, Account account) {
         LOGGER.info("Adding transaction to mixing queue.");
         mixingQueue.addEvent(new MixingTransaction(houseAddress,
-                /*account.getAddress(),
-                String.valueOf(account.getAmount()),*/
                 Utils.dateToString(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("UTC"))),
                 mixingRequest,
                 account));
-        // LOGGER.info("Added transaction to mixing queue.");
     }
 
     private void onMixer(IMixingTransaction mixingTransaction) {
@@ -125,7 +122,6 @@ public class MixingService implements IMixingService {
             // compute mixing fee rounded off to 4 decimal places.
             var mixingFee = (double)Math.round(mixingFeeFactor * amountToTransfer * 10000d) / 10000d;
 
-            // TODO: synchronization
             synchronized (this) {
                 mixingAccountBalance += mixingFee;
                 houseAccountBalance -= amountToTransfer;
