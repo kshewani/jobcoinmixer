@@ -48,13 +48,13 @@ public class MixingService implements IMixingService {
 
     private void refund(ITransaction transaction) {
         try {
-            LOGGER.info(String.format("Refunding %s coins to house account.", transaction.getAmount()));
+            LOGGER.info(String.format("Refunding %s coins to source account.", transaction.getAmount()));
             ITransaction refundTransaction = new Transaction(mixerAddress,
                     transaction.getFromAddress(),
                     String.valueOf(transaction.getAmount()),
                     Utils.dateToString(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("UTC"))));
             client.sendTransaction(refundTransaction);
-            LOGGER.info(String.format("Refunded %s to house account.", transaction.getAmount()));
+            LOGGER.info(String.format("Refunded %s to source account.", transaction.getAmount()));
         } catch (Exception e) {
             LOGGER.error("An error occurred while refunding transaction. Error details: ");
             e.printStackTrace();
