@@ -25,6 +25,8 @@ public class TransactionService implements ITransactionService {
     private final String mixerAddress;
     private final String houseAddress;
     private final IRestClient client;
+    private boolean cancelPolling;
+    private final ObjectMapper objectMapper;
 
     /**
      * Constructs a new TransactionService.
@@ -36,17 +38,22 @@ public class TransactionService implements ITransactionService {
     public TransactionService(IAction<ITransaction> onNewTransaction,
                               String mixerAddress,
                               String houseAddress,
-                              IRestClient client) {
+                              IRestClient client,
+                              ObjectMapper objectMapper) {
         this.transactionQueue = new EventQueue("TransactionQueue", onNewTransaction);
         this.mixerAddress = mixerAddress;
         this.houseAddress = houseAddress;
         this.client = client;
+        this.objectMapper = objectMapper;
         lastTransactionDateTime = LocalDateTime.now(ZoneOffset.UTC);
     }
 
     private Optional<ITransaction[]> parseTransactions(String transactions) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
+            if (transactions == null || transactions.isEmpty()) {
+                return Optional.empty();
+            }
+
             return Optional.of(objectMapper.readValue(transactions, Transaction[].class));
         } catch (JsonProcessingException e) {
             LOGGER.error("An error occurred while parsing the transaction. Error details: ");
@@ -65,22 +72,17 @@ public class TransactionService implements ITransactionService {
                 (Utils.stringToDate(t.getTimestamp()).compareTo(lastTransactionDateTime) > 0);
     }
 
-    private void processTransaction(ITransaction transaction) {
+    private void sendTransactionForMixing(ITransaction transaction) {
         transactionQueue.addEvent(transaction);
         lastTransactionDateTime = Utils.stringToDate(transaction.getTimestamp());
     }
 
-    private void pollTransactionsInternal(int interval) {
-        while (true) {
-            try {
-                LOGGER.info("Polling for transactions.");
-                CompletableFuture<String> transactionsFuture = this.getTransactionsAsync();
-                this.processTransactions(transactionsFuture);
-                Thread.sleep(interval);
-            } catch (Exception e) {
-                LOGGER.error("An error occurred while processing the mixing request. Error details: ");
-                e.printStackTrace();
-            }
+    private void pollTransactionsInternal(int interval) throws Exception {
+        while (!cancelPolling) {
+            LOGGER.info("Polling for transactions.");
+            CompletableFuture<String> transactionsFuture = this.getTransactionsAsync();
+            this.processTransactions(transactionsFuture);
+            Thread.sleep(interval);
         }
     }
 
@@ -88,12 +90,12 @@ public class TransactionService implements ITransactionService {
      * Processes the received transactions.
      * @param transactionsAsync The CompletableFuture containing transactions in json format.
      */
-    @Override
-    public void processTransactions(CompletableFuture<String> transactionsAsync) {
+    private void processTransactions(CompletableFuture<String> transactionsAsync) {
         try {
             Optional<ITransaction[]> transactionList = transactionsAsync.thenApply(this::parseTransactions).get();
             if (transactionList.isEmpty()) {
                 LOGGER.info("No transactions received from server.");
+                return;
             }
 
             ITransaction[] transactions = transactionList.get();
@@ -102,9 +104,9 @@ public class TransactionService implements ITransactionService {
             Arrays.stream(transactionList.get())
                     .parallel()
                     .filter(t -> isMatchingTransaction(t))
-                    .forEach(this::processTransaction);
+                    .forEach(this::sendTransactionForMixing);
         } catch (Exception e) {
-            LOGGER.error("An error occurred while processing the transaction. Error details: ");
+            LOGGER.error("An error occurred while processing a transaction. Error details: ");
             e.printStackTrace();
         }
     }
@@ -114,8 +116,7 @@ public class TransactionService implements ITransactionService {
      * @return A CompletableFuture containing transactions json string.
      * @throws Exception
      */
-    @Override
-    public CompletableFuture<String> getTransactionsAsync() throws Exception {
+    private CompletableFuture<String> getTransactionsAsync() throws Exception {
         return client.getTransactionsAsync();
     }
 
@@ -125,6 +126,18 @@ public class TransactionService implements ITransactionService {
     @Override
     public void pollTransactions(int interval) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> this.pollTransactionsInternal(interval));
+        executor.submit(() -> {
+            try {
+                this.pollTransactionsInternal(interval);
+            } catch (Exception e) {
+                LOGGER.error("An error occurred while polling for transactions. Error details: ");
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void stopPolling() {
+        this.cancelPolling = true;
     }
 }

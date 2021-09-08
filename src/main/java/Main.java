@@ -41,7 +41,7 @@ public class Main {
                 Double.parseDouble(appProps.get("jobcoin.mixing.fee.factor").toString()),
                 client);
         ITransactionService transactionService = new TransactionService(t -> mixingService.onNewTransaction(t),
-                "KAM_MIXER", appProps.get("jobcoin.house.address").toString(), client);
+                "KAM_MIXER", appProps.get("jobcoin.house.address").toString(), client, new ObjectMapper());
         transactionService.pollTransactions(Integer.valueOf(appProps.get("jobcoin.transactions.polling.interval").toString()));
         return new MixingRequestService(transactionService, mixingService);
     }
