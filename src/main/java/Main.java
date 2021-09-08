@@ -35,8 +35,7 @@ public class Main {
     private static IMixingRequestService bootstrap(Properties appProps) {
         // this should actually be done using some IOC framework. For eg. Spring
         // "https://jobcoin.gemini.com/anymore-dose/api/transactions";
-        IRestClient client = new RestClient();
-        client.setUrl(appProps.get("jobcoin.url").toString());
+        IRestClient client = new RestClient(appProps.get("jobcoin.url").toString());
         IMixingService mixingService = new MixingService(appProps.get("jobcoin.house.address").toString(),
                 appProps.get("jobcoin.mixer.address").toString(),
                 Double.parseDouble(appProps.get("jobcoin.mixing.fee.factor").toString()),

@@ -19,27 +19,4 @@ public class RandomSplit extends CoinSplitAlgo {
         Random randomizer = new Random();
         return randomizer.nextInt(bound);
     }
-
-    /*@Override
-    public void computeTransferAmount(IMixingRequest mixingRequest) {
-        var boundWrapper = new Object() { int bound = mixingRequest.getWallets().size(); };
-        var remainingAmountWrapper =
-                new Object() { double remainingAmount = Double.parseDouble(mixingRequest.getAmount()); };
-        var countWrapper = new Object() { int count = mixingRequest.getWallets().size(); };
-        Random randomizer = new Random();
-        mixingRequest.getWallets().forEach(a -> {
-            if (countWrapper.count == 1) {
-                a.setSplitPercentage(boundWrapper.bound);
-                a.setWalletAmount(remainingAmountWrapper.remainingAmount);
-                countWrapper.count--;
-                return;
-            }
-            int splitValue = randomizer.nextInt(boundWrapper.bound);
-            boundWrapper.bound -= splitValue;
-            double amountToTransfer = Double.parseDouble(mixingRequest.getAmount()) * splitValue / 100;
-            remainingAmountWrapper.remainingAmount -= amountToTransfer;
-            a.setSplitPercentage(splitValue);
-            countWrapper.count--;
-        });
-    }*/
 }

@@ -14,12 +14,6 @@ public interface IRestClient {
     CompletableFuture<String> getTransactionsAsync() throws Exception;
 
     /**
-     * Sets the REST url.
-     * @param url the REST url.
-     */
-    void setUrl(String url);
-
-    /**
      * Sends a new transaction by calling transaction api.
      * @param newTransaction a new transaction
      * @throws Exception

@@ -97,17 +97,6 @@ public class MixingService implements IMixingService {
                (Double.parseDouble(mixingRequest.getAmount()) == Double.parseDouble(transaction.getAmount()));
     }
 
-    /*private void sendTransactionToMixingQueue(IMixingRequest mixingRequest, Account account) {
-        LOGGER.info("Adding transaction to mixing queue.");
-        mixingQueue.addEvent(new MixingTransaction(houseAddress,
-                account.getAddress(),
-                String.valueOf(account.getAmount()),
-                Utils.dateToString(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("UTC"))),
-                mixingRequest,
-                mixingRequest.getMixingRequestId()));
-        LOGGER.info("Added transaction to mixing queue.");
-    }*/
-
     private void sendTransactionToMixingQueue(IMixingRequest mixingRequest, Account account) {
         LOGGER.info("Adding transaction to mixing queue.");
         mixingQueue.addEvent(new MixingTransaction(houseAddress,

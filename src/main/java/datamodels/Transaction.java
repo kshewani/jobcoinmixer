@@ -49,6 +49,4 @@ public class Transaction implements ITransaction {
     public void setIsRefunded(boolean refunded) {
         this.isRefunded = refunded;
     }
-
-
 }

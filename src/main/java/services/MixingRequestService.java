@@ -34,8 +34,6 @@ public class MixingRequestService implements IMixingRequestService {
             LOGGER.info(mixingRequest.toString());
             mixingService.submitMixingRequest(mixingRequest);
             LOGGER.info("Fetching transactions");
-            /*CompletableFuture<String> transactionsFuture = transactionService.getTransactionsAsync();
-            transactionService.processTransactions(transactionsFuture);*/
         } catch (Exception e) {
             LOGGER.error("An error occurred while processing the mixing request. Error details: ");
             e.printStackTrace();

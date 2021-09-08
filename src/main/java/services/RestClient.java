@@ -23,11 +23,7 @@ public class RestClient implements IRestClient {
     /**
      * Constructs a new Client.
      */
-    public RestClient() {
-    }
-
-    @Override
-    public void setUrl(String url) {
+    public RestClient(String url) {
         this.url = url;
     }
 
