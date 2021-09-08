@@ -9,7 +9,7 @@ This coin mixer application helps achieve this anonymity by transferring the coi
 3. Once the mixer receives the amount, the mixer transfers the coins to a house account.
 4. Mixer then transfers coins to each destination address after deducting a mixing fee (0.01%).
 
-![Flow diagram](C:\Kamlesh\git\java\gemini\jobcoinmixer\jobcoinmixer_flow.jpg)
+![Flow diagram](.\jobcoinmixer_flow.jpg)
 
 Note: Currently the application can only accept mixing requests in JSON format from the command line. For the sake of demonstration, one sample JSON request is hardcoded in the application.
 
