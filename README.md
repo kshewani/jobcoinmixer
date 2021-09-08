@@ -1,6 +1,6 @@
 This is well known that most cryptocurrencies are pseudonymous. This means, these are not fully anonymous and transactions can be traced to an individual following his/her address.
 
-This coin mixer application helps achieve this anonymity by transferring the coins to a bunch of addresses instead of just one. This is how it works:
+This coin mixer application helps achieve better anonymity by transferring the coins to a bunch of addresses instead of just one. This is how it works:
 1. A user submits a mixing request. A mixing request contains the following fields:
     - The amount to be transferred.
     - One or more address(es) to which the coins are to be transferred.
