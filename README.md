@@ -35,8 +35,8 @@ Note: Currently the application can only accept mixing requests in JSON format f
 }
 
 ## How to run:
-Run below command from command prompt
->java -jar .\out\artifacts\jobcoinmixer_jar\jobcoinmixer.jar
+Run below command on command prompt
+>java -jar .\out\artifacts\jobcoinmixer_jar\jobcoinmixer.jar {\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"20\",\"distributionType\":\"Equal\"}
 
 ## Technical details:
 Following are the important components of the application:
