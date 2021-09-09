@@ -46,7 +46,7 @@ public class TransactionServiceTest extends TestCase {
         Mockito.when(mockRestClient.getTransactionsAsync()).thenReturn(transactionsFuture);
         Mockito.when(mockObjectMapper.readValue(transactions, Transaction[].class)).thenReturn(transactionsArray);
         classUnderTest.pollTransactions(10);
-        Thread.currentThread().sleep(2);
+        Thread.currentThread().sleep(1000);
         classUnderTest.stopPolling();
         Mockito.verify(mockRestClient, Mockito.atLeast(1)).getTransactionsAsync();
         Mockito.verify(mockObjectMapper, Mockito.atLeast(1)).readValue(transactions, Transaction[].class);
@@ -58,7 +58,7 @@ public class TransactionServiceTest extends TestCase {
         Mockito.when(mockRestClient.getTransactionsAsync()).thenReturn(transactionsFuture);
         Mockito.when(mockObjectMapper.readValue(transactions, Transaction[].class)).thenReturn(new Transaction[0]);
         classUnderTest.pollTransactions(10);
-        Thread.currentThread().sleep(2);
+        Thread.currentThread().sleep(1000);
         classUnderTest.stopPolling();
         Mockito.verify(mockRestClient, Mockito.atLeast(1)).getTransactionsAsync();
     }
@@ -73,7 +73,7 @@ public class TransactionServiceTest extends TestCase {
         Mockito.when(mockRestClient.getTransactionsAsync()).thenReturn(transactionsFuture);
         Mockito.when(mockObjectMapper.readValue(transactions, Transaction[].class)).thenReturn(transactionsArray);
         classUnderTest.pollTransactions(10);
-        Thread.currentThread().sleep(2);
+        Thread.currentThread().sleep(1000);
         //classUnderTest.setCancelPolling(true);
         Mockito.verify(mockRestClient, Mockito.atLeast(1)).getTransactionsAsync();
         Mockito.verify(mockObjectMapper, Mockito.atLeast(1)).readValue(transactions, Transaction[].class);

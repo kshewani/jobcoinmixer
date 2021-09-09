@@ -13,23 +13,24 @@ import services.MixingService;
 import services.RestClient;
 import services.TransactionService;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Main {
     static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        String appConfigPath = rootPath + "app.properties";
-        Properties appProps = new Properties();
-        appProps.load(new FileInputStream(appConfigPath));
+        Properties props;
+        try (InputStream resourceAsStream = Main.class.getClassLoader().getResourceAsStream("app.properties")) {
+            props = new Properties();
+            props.load(resourceAsStream);
+        }
         // Sample mixing requests:
-        // "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"splitType\":\"Equal\"}";
-        // "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"splitType\":\"Random\"}";
+        // "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"distributionType\":\"Equal\"}";
+        // "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"distributionType\":\"Random\"}";
         System.out.println("Mixing request: " + args[0]);
-        run(appProps, args);
+        run(props, args);
     }
 
     private static IMixingRequestService bootstrap(Properties appProps) {
@@ -46,12 +47,12 @@ public class Main {
         return new MixingRequestService(transactionService, mixingService);
     }
 
-    private static void run(Properties appProps, String... args) throws JsonProcessingException {
+    private static void run(Properties props, String... args) throws JsonProcessingException {
         LOGGER.info("Starting jobcoinmixer application.");
         ObjectMapper objectMapper = new ObjectMapper();
         MixingRequest mixingRequest = objectMapper.readValue(args[0], MixingRequest.class);
 
-        IMixingRequestService mixingRequestService = bootstrap(appProps);
+        IMixingRequestService mixingRequestService = bootstrap(props);
         mixingRequestService.submitMixingRequest(mixingRequest);
     }
 }

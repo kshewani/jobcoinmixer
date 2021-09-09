@@ -5,10 +5,10 @@ package interfaces;
  */
 public interface IAccount {
     /**
-     * Sets the split percentage.
-     * @param splitPercentage the split percentage.
+     * Sets the distribution percentage.
+     * @param distributionPercentage the distribution percentage.
      */
-    void setSplitPercentage(double splitPercentage);
+    void setDistributionPercentage(double distributionPercentage);
 
     /**
      * Sets the amount to transfer to this account.

@@ -1,12 +1,12 @@
 package services;
 
-import interfaces.ICoinSplitAlgo;
+import interfaces.ICoinDistributionAlgo;
 import interfaces.IMixingRequest;
 
 /**
- * An abstract class defining logic of how the coins will be split across addresses provided in a mixing request.
+ * An abstract class defining logic of how the coins will be distribution across addresses provided in a mixing request.
  */
-public abstract class CoinSplitAlgo implements ICoinSplitAlgo {
+public abstract class CoinDistributionAlgo implements ICoinDistributionAlgo {
     /**
      * Computes transfer amount for each address in mixing request.
      * @param mixingRequest the mixing request.
@@ -20,22 +20,22 @@ public abstract class CoinSplitAlgo implements ICoinSplitAlgo {
 
         mixingRequest.getAccounts().forEach(a -> {
             if (countWrapper.count == 1) {
-                a.setSplitPercentage(boundWrapper.upperBound);
+                a.setDistributionPercentage(boundWrapper.upperBound);
                 a.setAmount(remainingAmountWrapper.remainingAmount);
                 countWrapper.count--;
                 return;
             }
 
-            // call the template method to compute split value.
-            int splitValue = this.getSplitValue(mixingRequest, boundWrapper.upperBound);
-            boundWrapper.upperBound -= splitValue;
-            double amountToTransfer = Double.parseDouble(mixingRequest.getAmount()) * splitValue / 100;
+            // call the template method to compute distribution value.
+            int distributionValue = this.getDistributionValue(mixingRequest, boundWrapper.upperBound);
+            boundWrapper.upperBound -= distributionValue;
+            double amountToTransfer = Double.parseDouble(mixingRequest.getAmount()) * distributionValue / 100;
             remainingAmountWrapper.remainingAmount -= amountToTransfer;
-            a.setSplitPercentage(splitValue);
+            a.setDistributionPercentage(distributionValue);
             a.setAmount(amountToTransfer);
             countWrapper.count--;
         });
     }
 
-    protected abstract int getSplitValue(IMixingRequest mixingRequest, int bound);
+    protected abstract int getDistributionValue(IMixingRequest mixingRequest, int bound);
 }

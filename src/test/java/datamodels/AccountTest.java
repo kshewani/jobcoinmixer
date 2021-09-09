@@ -15,8 +15,8 @@ public class AccountTest extends TestCase {
         classUnderTest = null;
     }
 
-    public void testSetSplitPercentage() {
-        classUnderTest.setSplitPercentage(50);
+    public void testSetDistributionPercentage() {
+        classUnderTest.setDistributionPercentage(50);
     }
 
     public void testSetAmount() {

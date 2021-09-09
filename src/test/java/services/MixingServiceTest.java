@@ -34,7 +34,7 @@ public class MixingServiceTest extends TestCase {
     }
 
     private MixingRequest submitMixingRequest() throws JsonProcessingException {
-        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"splitType\":\"Equal\"}";
+        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"distributionType\":\"Equal\"}";
         ObjectMapper objectMapper = new ObjectMapper();
         MixingRequest mixingRequest = objectMapper.readValue(mixingRequestStr, MixingRequest.class);
         classUnderTest.submitMixingRequest(mixingRequest);

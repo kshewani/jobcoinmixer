@@ -36,7 +36,7 @@ public class MixingRequestServiceTest extends TestCase {
 
     @Test(expected = Exception.class)
     public void testSubmitMixingRequest_when_submitted_mixing_service_throws_an_error() throws JsonProcessingException, InterruptedException {
-        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"splitType\":\"Random\"}";
+        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"distributionType\":\"Random\"}";
         ObjectMapper objectMapper = new ObjectMapper();
         IMixingRequest mixingRequest = objectMapper.readValue(mixingRequestStr, MixingRequest.class);
         Mockito.doThrow(Exception.class).when(mockMixingService).submitMixingRequest(mixingRequest);
@@ -45,7 +45,7 @@ public class MixingRequestServiceTest extends TestCase {
     }
 
     public void testSubmitMixingRequest_when_submitted_a_valid_mixing_request_should_send_request_to_mixing_service_and_initialize_equal_distribution_of_coins() throws JsonProcessingException, InterruptedException {
-        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"splitType\":\"Equal\"}";
+        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"distributionType\":\"Equal\"}";
         ObjectMapper objectMapper = new ObjectMapper();
         IMixingRequest mixingRequest = objectMapper.readValue(mixingRequestStr, MixingRequest.class);
         Mockito.doNothing().when(mockMixingService).submitMixingRequest(mixingRequest);
@@ -55,7 +55,7 @@ public class MixingRequestServiceTest extends TestCase {
     }
 
     public void testSubmitMixingRequest_when_submitted_a_valid_mixing_request_should_send_request_to_mixing_service_and_initialize_random_distribution_of_coins() throws JsonProcessingException, InterruptedException {
-        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"splitType\":\"Random\"}";
+        String mixingRequestStr = "{\"sourceAddress\":\"Kam\",\"accounts\":[{\"address\":\"Alice\",\"amount\":0.0},{\"address\":\"Bob\",\"amount\":0.0},{\"address\":\"Hazy\",\"amount\":0.0}],\"amount\":\"15\",\"distributionType\":\"Random\"}";
         ObjectMapper objectMapper = new ObjectMapper();
         IMixingRequest mixingRequest = objectMapper.readValue(mixingRequestStr, MixingRequest.class);
         Mockito.doNothing().when(mockMixingService).submitMixingRequest(mixingRequest);

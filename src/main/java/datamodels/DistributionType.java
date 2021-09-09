@@ -1,6 +1,6 @@
 package datamodels;
 
-public enum SplitType {
+public enum DistributionType {
     Equal,
     Random
 }

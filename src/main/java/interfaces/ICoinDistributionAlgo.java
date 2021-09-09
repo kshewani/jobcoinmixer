@@ -1,9 +1,9 @@
 package interfaces;
 
 /**
- * An interface defining skeleton of how the coins will be split across addresses provided in a mixing request.
+ * An interface defining skeleton of how the coins will be distributed across addresses provided in a mixing request.
  */
-public interface ICoinSplitAlgo {
+public interface ICoinDistributionAlgo {
     /**
      * Computes transfer amount for each address in mixing request.
      * @param mixingRequest the mixing request.

@@ -7,7 +7,7 @@ import interfaces.IAccount;
  */
 public class Account implements IAccount {
     private String address;
-    private double splitPercentage;
+    private double distributionPercentage;
     private double amount;
     private boolean isAmountTransferred;
 
@@ -19,20 +19,20 @@ public class Account implements IAccount {
     /**
      * Creates an account object.
      * @param address the address of this account.
-     * @param splitPercentage indicates how much of total mixing request value is to be transferred to this account.
+     * @param distributionPercentage indicates how much of total mixing request value is to be transferred to this account.
      */
-    public Account(String address, double splitPercentage) {
+    public Account(String address, double distributionPercentage) {
         this.address = address;
-        this.splitPercentage = splitPercentage;
+        this.distributionPercentage = distributionPercentage;
     }
 
     /**
-     * Sets the split percentage.
-     * @param splitPercentage the split percentage.
+     * Sets the distribution percentage.
+     * @param distributionPercentage the distribution percentage.
      */
     @Override
-    public void setSplitPercentage(double splitPercentage) {
-        this.splitPercentage = splitPercentage;
+    public void setDistributionPercentage(double distributionPercentage) {
+        this.distributionPercentage = distributionPercentage;
     }
 
     /**

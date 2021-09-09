@@ -16,9 +16,6 @@ public class MixingRequestTest extends TestCase {
         classUnderTest = null;
     }
 
-    public void testGetRequestBookingTime() {
-    }
-
     public void testAttachTransaction() {
         ITransaction transaction =  new Transaction();
         classUnderTest.attachTransaction(transaction);
@@ -39,9 +36,6 @@ public class MixingRequestTest extends TestCase {
         assertEquals(null, classUnderTest.getAmount());
     }
 
-    public void testInitialize() {
-    }
-
     public void testSetMixingRequestId() {
         classUnderTest.setMixingRequestId(1);
         assertEquals(1, classUnderTest.getMixingRequestId());
@@ -52,14 +46,8 @@ public class MixingRequestTest extends TestCase {
         assertEquals(1, classUnderTest.getMixingRequestId());
     }
 
-    public void testIsComplete() {
-    }
-
     public void testGetAccounts() {
         assertEquals(null, classUnderTest.getAccounts());
-    }
-
-    public void testGetSplitType() {
     }
 
     public void testTestToString() {

@@ -4,7 +4,7 @@ This coin mixer application helps achieve better anonymity by transferring the c
 1. A user submits a mixing request. A mixing request contains the following fields:
     - The amount to be transferred.
     - One or more address(es) to which the coins are to be transferred.
-    - The way amount is to be split across addresses. The application currently allows equal and random splits.
+    - The way amount is to be distribution across addresses. The application currently allows equal and random distribution of coins.
 2. Upon submission of the request, the user needs to transfer the exact amount as specified in the mixing request to the mixer address (KAM_MIXER).
 3. Once the mixer receives the amount, the mixer transfers the coins to a house account.
 4. Mixer then transfers coins to each destination address after deducting a mixing fee (0.01%).
@@ -31,7 +31,7 @@ Note: Currently the application can only accept mixing requests in JSON format f
 }
 ],
 "amount": "15",
-"splitType": "Equal"
+"distributionType": "Equal"
 }
 
 ## How to run:
@@ -42,7 +42,7 @@ Run below command from command prompt
 Following are the important components of the application:
 1. #### MixingRequestService:
     - Accepts mixing request service.
-    - Calculates the amount to be paid to each destination address based on the split type mentioned in the mixing request (Equal/Random).
+    - Calculates the amount to be paid to each destination address based on the distribution type mentioned in the mixing request (Equal/Random).
     - Submits the mixing request to MixingService for further processing.
 2. #### TransactionService:
     - Polls for transactions based on the configured interval.
@@ -60,8 +60,15 @@ Following are the important components of the application:
     - Each matching transaction is added as an event to TransactionQueue and subsequently processed by MixingSerivce.
     - Every transfer to a destination address is added as an event to MixingQueue.
     - Enables concurrent execution of mixing events.
-5. #### CoinSplitAlgoFactory:
+5. #### CoinDistributionAlgoFactory:
    - Creates a corresponding algorithm to decide how much coins are to be transferred to each destination address.
+
+#### Current unit testing coverage:
+```
+Elements     Class, %     Method, %     Line, %
+datamodels   100% (5/5)   91% (32/35)   94% (47/50)
+services     92% (13/14)  90% (38/42)   75% (183/241)
+```
 
 ## Path to production:
 1. A friendly UI would be required to accept mixing request details from users and submit the same to JobCoinMixer in JSON format via REST api.
@@ -75,9 +82,9 @@ JobcoinmixerApplication - Starting jobcoinmixer application.
 services.TransactionService - Polling for transactions.
 jobcoinmixer.services.RestClient - Fetching transactions from REST server.
 services.MixingRequestService - Received mixing request:
-services.MixingRequestService - {"sourceAddress":"Kam","accounts":[{"address":"Alice","amount":0.0,"isAmountTransferred":false},{"address":"Bob","amount":0.0,"isAmountTransferred":false},{"address":"Hazy","amount":0.0,"isAmountTransferred":false}],"amount":"15","splitType":"Equal","complete":false}
+services.MixingRequestService - {"sourceAddress":"Kam","accounts":[{"address":"Alice","amount":0.0,"isAmountTransferred":false},{"address":"Bob","amount":0.0,"isAmountTransferred":false},{"address":"Hazy","amount":0.0,"isAmountTransferred":false}],"amount":"15","distributionType":"Equal","complete":false}
 services.MixingRequestService - Mixing request post initialization. Id: 1
-services.MixingRequestService - {"sourceAddress":"Kam","accounts":[{"address":"Alice","amount":4.95,"isAmountTransferred":false},{"address":"Bob","amount":4.95,"isAmountTransferred":false},{"address":"Hazy","amount":5.1000000000000005,"isAmountTransferred":false}],"amount":"15","splitType":"Equal","complete":false}
+services.MixingRequestService - {"sourceAddress":"Kam","accounts":[{"address":"Alice","amount":4.95,"isAmountTransferred":false},{"address":"Bob","amount":4.95,"isAmountTransferred":false},{"address":"Hazy","amount":5.1000000000000005,"isAmountTransferred":false}],"amount":"15","distributionType":"Equal","complete":false}
 services.TransactionService - Polling for transactions.
 jobcoinmixer.services.RestClient - Fetching transactions from REST server.
 jobcoinmixer.services.RestClient - Transaction details: {"isRefunded":false,"fromAddress":"KAM_MIXER","toAddress":"KAM_MIXER_HOUSE","amount":"15","timestamp":"2021-09-07T23:29:50.928UTC"}

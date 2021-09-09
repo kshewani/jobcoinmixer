@@ -3,10 +3,10 @@ package datamodels;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import interfaces.ICoinSplitAlgo;
+import interfaces.ICoinDistributionAlgo;
 import interfaces.IMixingRequest;
 import interfaces.ITransaction;
-import services.CoinSplitAlgoFactory;
+import services.CoinDistributionAlgoFactory;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -20,10 +20,10 @@ public class MixingRequest implements IMixingRequest {
     List<Account> accounts;
     String amount;
     final LocalDateTime requestBookingTime;
-    SplitType splitType;
+    DistributionType distributionType;
     int count;
     ITransaction transaction;
-    ICoinSplitAlgo coinSplitAlgo;
+    ICoinDistributionAlgo coinDistributionAlgo;
     int id;
 
     /**
@@ -83,8 +83,8 @@ public class MixingRequest implements IMixingRequest {
      */
     @Override
     public void initialize() {
-        coinSplitAlgo = CoinSplitAlgoFactory.createCoinSplitAlgo(splitType);
-        this.coinSplitAlgo.computeTransferAmount(this);
+        coinDistributionAlgo = CoinDistributionAlgoFactory.createCoinDistributionAlgo(distributionType);
+        this.coinDistributionAlgo.computeTransferAmount(this);
     }
 
     /**
@@ -125,11 +125,11 @@ public class MixingRequest implements IMixingRequest {
     }
 
     /**
-     * Gets the split type. Equal, Random etc.
-     * @return the split type.
+     * Gets the distribution type. Equal, Random etc.
+     * @return the distribution type.
      */
-    public SplitType getSplitType() {
-        return splitType;
+    public DistributionType getDistributionType() {
+        return distributionType;
     }
 
     /**
