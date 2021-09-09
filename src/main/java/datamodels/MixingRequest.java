@@ -34,17 +34,6 @@ public class MixingRequest implements IMixingRequest {
     }
 
     /**
-     * Creates a mixing request object.
-     */
-    public MixingRequest(String sourceAddress, List<Account> accounts, String amount, SplitType splitType) {
-        this.sourceAddress = sourceAddress;
-        this.accounts = accounts;
-        this.amount = amount;
-        this.splitType = splitType;
-        requestBookingTime = LocalDateTime.now(ZoneOffset.UTC);
-    }
-
-    /**
      * Gets request booking time.
      * @return the booking request time.
      */

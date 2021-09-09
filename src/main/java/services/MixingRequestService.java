@@ -37,6 +37,7 @@ public class MixingRequestService implements IMixingRequestService {
         } catch (Exception e) {
             LOGGER.error("An error occurred while processing the mixing request. Error details: ");
             e.printStackTrace();
+            throw e;
         }
     }
 
