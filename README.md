@@ -1,13 +1,13 @@
 This is well known that most cryptocurrencies are pseudonymous. This means, these are not fully anonymous and transactions can be traced to an individual following his/her address.
 
 This coin mixer application helps achieve better anonymity by transferring the coins to a bunch of addresses instead of just one. This is how it works:
-1. A user submits a mixing request. A mixing request contains the following fields:
+1. A user submits a mixing request with contents as below:
     - The amount to be transferred.
     - One or more address(es) to which the coins are to be transferred.
-    - The way amount is to be distribution across addresses. The application currently allows equal and random distribution of coins.
+    - The way amount is to be distributed across addresses (the application currently allows Equal and Random distribution of coins).
 2. Upon submission of the request, the user needs to transfer the exact amount as specified in the mixing request to the mixer address (KAM_MIXER).
-3. Once the mixer receives the amount, the mixer transfers the coins to a house account.
-4. Mixer then transfers coins to each destination address after deducting a mixing fee (0.01%).
+3. Once the jobcoinmixer receives the amount, it transfers the coins to a house account.
+4. Jobcoinmixer then transfers coins to each destination address after deducting a mixing fee (0.01%).
 
 ![Flow diagram](jobcoinmixer_flow.jpg)
 
@@ -41,7 +41,7 @@ Run below command on command prompt
 ## Technical details:
 Following are the important components of the application:
 1. #### MixingRequestService:
-    - Accepts mixing request service.
+    - Accepts mixing requests.
     - Calculates the amount to be paid to each destination address based on the distribution type mentioned in the mixing request (Equal/Random).
     - Submits the mixing request to MixingService for further processing.
 2. #### TransactionService:
@@ -49,7 +49,7 @@ Following are the important components of the application:
     - Finds transactions that are paid to mixer address.
     - Sends the matching transactions to MixingService.
 3. #### MixingService:
-    - Receives transactions paid to mixer address from TransactionService.
+    - Receives matching transactions paid to mixer address from TransactionService.
     - Maps transactions to mixing requests by comparing the source address.
     - Performs validation on transactions.
     - If not found valid, refunds the coins back to the source address.
@@ -61,7 +61,7 @@ Following are the important components of the application:
     - Every transfer to a destination address is added as an event to MixingQueue.
     - Enables concurrent execution of mixing events.
 5. #### CoinDistributionAlgoFactory:
-   - Creates a corresponding algorithm to decide how much coins are to be transferred to each destination address.
+   - Creates a corresponding algorithm to decide how many coins should be transferred to each destination address. Currently support Equal and Random distribution of coins.
 
 #### Current unit testing coverage:
 ```
